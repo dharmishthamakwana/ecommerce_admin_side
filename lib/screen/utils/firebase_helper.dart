@@ -1,3 +1,4 @@
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -7,49 +8,77 @@ class FirebaseHelper {
   FirebaseHelper._();
 
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  String? UserUid;
 
-  Future<String> SignUpUser(
+  //SignUp Account Function
+  Future<dynamic> CreateSignUp(
       {required String email, required String password}) async {
-    String? msg;
+    dynamic isSignUp;
 
     await firebaseAuth
         .createUserWithEmailAndPassword(email: email, password: password)
-        .then((value) {
-      msg = "Sign Up Successful With $email";
-    }).catchError((error) {
-      msg = "$error";
-    });
-    return msg!;
-    // return check;
+        .then(
+      (value) {
+        print("========= Successfully ");
+        isSignUp = true;
+      },
+    ).catchError(
+      (error) {
+        int len = 0;
+        for (int i = 0; i < error.toString().length; i++) {
+          if (error.toString()[i].contains(']')) {
+            len = i + 2;
+            print("object====== $len");
+            break;
+          }
+        }
+        isSignUp = error.toString().substring(len, error.toString().length);
+      },
+    );
+
+    return isSignUp;
   }
 
-  //Sign In In Firebase Authentication
-  Future<bool?> SignInUser(
+  //SignIn Account Function
+  Future<dynamic> SignInUser(
       {required String email, required String password}) async {
-    bool? check;
+    dynamic isSignIn;
 
     await firebaseAuth
         .signInWithEmailAndPassword(email: email, password: password)
         .then((value) {
-      check = true;
+      print("object== $value");
+      isSignIn = true;
     }).catchError((error) {
+      int len = 0;
+      for (int i = 0; i < error.toString().length; i++) {
+        if (error.toString()[i].contains(']')) {
+          len = i + 2;
+          print("object====== $len");
+          break;
+        }
+      }
+      isSignIn = error.toString().substring(len, error.toString().length);
     });
-    // return msg!;
-    return check;
+    print("===== $isSignIn");
+    return isSignIn;
   }
 
-  //Check User Login In Firebase Authentication
-  bool CheckUserLogin() {
-    User? user = firebaseAuth.currentUser;
-    return user != null;
+  //Check User Login
+  Future<bool> CheckSignIn() async {
+    if (await firebaseAuth.currentUser != null) {
+      return true;
+    }
+    return false;
   }
 
+  //Sign Out User
   Future<bool?> SignOut() async {
     bool? msg;
     await firebaseAuth.signOut().then((value) => msg = true);
     return msg;
   }
-
+  //Login With Google
   Future<dynamic> GoogleLogIn() async {
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -77,4 +106,6 @@ class FirebaseHelper {
       }
     });
   }
+
+
 }
