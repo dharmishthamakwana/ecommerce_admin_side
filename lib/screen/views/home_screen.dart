@@ -30,11 +30,14 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              "welcome...!!",
-              style: TextStyle(
-              fontSize: 50, fontWeight: FontWeight.w900, letterSpacing: 2),
+            Center(
+              child: Text(
+                "welcome...!!",
+                style: TextStyle(
+                fontSize: 50, fontWeight: FontWeight.w900, letterSpacing: 2),
+              ),
             ),
           ],
         ),
