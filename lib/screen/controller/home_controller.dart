@@ -20,7 +20,7 @@ class HomeController extends GetxController {
   //Only Function's
 
   Future<void> IsLogin() async {
-    bool isLogin = await FirebaseHelper.firebaseHelper.CheckSignIn();
+    bool isLogin = await FirebaseHelper.firebaseHelper.checkUser();
     print("===== $isLogin");
     if (isLogin) {
       Timer(Duration(seconds: 3), () {
@@ -32,6 +32,13 @@ class HomeController extends GetxController {
       });
     }
   }
+  RxMap userData = {}.obs;
+  Future<void> userDetailFromId()
+  async {
+    userData.value = await FirebaseHelper.firebaseHelper.userDetails();
+    print(userData);
+  }
 
-  void GetData() {}
+  RxString? msg;
+
 }

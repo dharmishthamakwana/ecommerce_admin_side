@@ -1,6 +1,4 @@
 import 'package:firebase_app/screen/controller/home_controller.dart';
-import 'package:firebase_app/screen/utils/firebase_helper.dart';
-import 'package:firebase_app/screen/utils/tostmessges.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -223,61 +221,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () async {
-                          if (homeController.SignUpkey.currentState!
-                              .validate()) {
-                            var isSignUp = await FirebaseHelper.firebaseHelper
-                                .CreateSignUp(
-                                    email: homeController
-                                        .txtSignUpEmail.value.text,
-                                    password: homeController
-                                        .txtSignUpPass.value.text);
 
-                            if (isSignUp is bool) {
-                              Get.back();
-                              ToastMessage(
-                                  msg:
-                                      "Sign Up Successful\nEmail : ${homeController.txtSignInEmail.text}",
-                                  color: Colors.green);
-                              homeController.txtSignUpEmail.clear();
-                              homeController.txtSignUpPass.clear();
-                            } else {
-                              ToastMessage(msg: "$isSignUp", color: Colors.red);
-                            }
-                          } else {
-                            ToastMessage(
-                                msg: "Please Add Your Email & Password",
-                                color: Colors.blueAccent.shade100);
-                          }
-                        },
-                        child: Container(
-                          height: Get.height / 18,
-                          width: Get.width / 3,
-                          margin: EdgeInsets.only(
-                              top: Get.width / 12, right: Get.width / 12),
-                          decoration: BoxDecoration(
-                              gradient: LinearGradient(colors: [
-                                Colors.blueAccent.shade100,
-                                Colors.blueAccent.shade200,
-                              ]),
-                              boxShadow: [
-                                BoxShadow(
-                                    color: Colors.blueAccent.shade100,
-                                    blurRadius: 15,
-                                    offset: Offset(0, 0))
-                              ],
-                              borderRadius: BorderRadius.circular(30)),
-                          alignment: Alignment.center,
-                          child: Text(
-                            "SIGN UP",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15.sp,
-                            ),
-                          ),
-                        ),
-                      ),
                       Padding(
                         padding: EdgeInsets.only(
                             top: Get.width / 21, right: Get.width / 12),
@@ -289,56 +233,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                         ),
                       ),
-                      Container(
-                        height: Get.height / 21,
-                        width: Get.width / 2,
-                        // color: Colors.red,
-                        margin: EdgeInsets.only(
-                            right: Get.width / 12, top: Get.width / 21),
-                        alignment: Alignment.center,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            InkWell(
-                              onTap: () async {
-                                var isLogin = await FirebaseHelper
-                                    .firebaseHelper
-                                    .GoogleLogIn();
-                                if (isLogin is bool) {
-                                  Get.offNamed('Home');
-                                  ToastMessage(
-                                      msg: "Sign In Successful",
-                                      color: Colors.green);
-                                } else {
-                                  ToastMessage(
-                                      msg: "Sign In Not Successful $isLogin",
-                                      color: Colors.red);
-                                }
-                              },
-                              child: Container(
-                                height: Get.height / 23,
-                                width: Get.height / 23,
-                                alignment: Alignment.center,
-                                child:
-                                    Image.asset("assets/image/google_logo.png"),
-                              ),
-                            ),
-                            Container(
-                              height: Get.height / 23,
-                              width: Get.height / 23,
-                              alignment: Alignment.center,
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: Get.width / 50),
-                              child: Text(
-                                "|",
-                                style: TextStyle(
-                                    color: Colors.black38, fontSize: 21.sp),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+
                       Padding(
                         padding: EdgeInsets.only(
                             top: Get.width / 21, right: Get.width / 12),

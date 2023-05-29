@@ -1,5 +1,5 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class FirebaseHelper {
@@ -8,104 +8,61 @@ class FirebaseHelper {
   FirebaseHelper._();
 
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-  String? UserUid;
 
-  //SignUp Account Function
-  Future<dynamic> CreateSignUp(
-      {required String email, required String password}) async {
-    dynamic isSignUp;
-
-    await firebaseAuth
+  void signUP({required email, required password}) {
+    firebaseAuth
         .createUserWithEmailAndPassword(email: email, password: password)
-        .then(
-      (value) {
-        print("========= Successfully ");
-        isSignUp = true;
-      },
-    ).catchError(
-      (error) {
-        int len = 0;
-        for (int i = 0; i < error.toString().length; i++) {
-          if (error.toString()[i].contains(']')) {
-            len = i + 2;
-            print("object====== $len");
-            break;
-          }
-        }
-        isSignUp = error.toString().substring(len, error.toString().length);
-      },
-    );
-
-    return isSignUp;
+        .then((value) => print("Login Success !"))
+        .catchError((e) => print("Failed : $e"));
   }
 
-  //SignIn Account Function
-  Future<dynamic> SignInUser(
-      {required String email, required String password}) async {
-    dynamic isSignIn;
 
-    await firebaseAuth
+  Future<String> signIn({required email, required password}) {
+    return firebaseAuth
         .signInWithEmailAndPassword(email: email, password: password)
         .then((value) {
-      print("object== $value");
-      isSignIn = true;
-    }).catchError((error) {
-      int len = 0;
-      for (int i = 0; i < error.toString().length; i++) {
-        if (error.toString()[i].contains(']')) {
-          len = i + 2;
-          print("object====== $len");
-          break;
-        }
-      }
-      isSignIn = error.toString().substring(len, error.toString().length);
+      return 'Success';
+    },)
+        .catchError((e){
+      return '$e';
     });
-    print("===== $isSignIn");
-    return isSignIn;
   }
 
-  //Check User Login
-  Future<bool> CheckSignIn() async {
-    if (await firebaseAuth.currentUser != null) {
-      return true;
-    }
-    return false;
+  bool checkUser() {
+    User? user = firebaseAuth.currentUser;
+    return user != null;
   }
 
-  //Sign Out User
-  Future<bool?> SignOut() async {
-    bool? msg;
-    await firebaseAuth.signOut().then((value) => msg = true);
+  Future<String?> googleSignIn() async {
+    String? msg;
+    GoogleSignInAccount? googleSignInAccount = await GoogleSignIn().signIn();
+    GoogleSignInAuthentication googleSignInAuthentication =
+    await googleSignInAccount!.authentication;
+    // create a new credential
+    var credential = GoogleAuthProvider.credential(
+      accessToken: googleSignInAuthentication.accessToken,
+      idToken: googleSignInAuthentication.idToken,
+    );
+    await firebaseAuth.signInWithCredential(credential).then((value) => msg='Success').catchError((e)=> msg='$e');
+    userDetails();
     return msg;
   }
-  //Login With Google
-  Future<dynamic> GoogleLogIn() async {
-    // Trigger the authentication flow
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
-    // Obtain the auth details from the request
-    final GoogleSignInAuthentication? googleAuth =
-        await googleUser?.authentication;
-
-    // Create a new credential
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
-
-    // Once signed in, return the UserCredential
-    await FirebaseAuth.instance.signInWithCredential(credential).then((value) {
-    }).catchError((error) {
-      int len = 0;
-      for (int i = 0; i < error.toString().length; i++) {
-        if (error.toString()[i].contains(']')) {
-          len = i + 2;
-          print("object====== $len");
-          break;
-        }
-      }
-    });
+  Future<bool> signOut()
+  async {
+    await firebaseAuth.signOut();
+    await GoogleSignIn().signOut();
+    return true;
   }
 
+  Future<Map> userDetails()
+  async {
+    User? user = await firebaseAuth.currentUser;
+    String? email = user!.email;
+    String? img = user.photoURL;
+    String? name = user.displayName;String ? number=user.phoneNumber;
+    Map m1 = {'email':email,'img':img,'name':name,'number':number};
+    return m1;
+  }
 
 }

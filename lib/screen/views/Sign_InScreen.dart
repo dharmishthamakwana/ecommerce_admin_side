@@ -1,6 +1,5 @@
 import 'package:firebase_app/screen/controller/home_controller.dart';
 import 'package:firebase_app/screen/utils/firebase_helper.dart';
-import 'package:firebase_app/screen/utils/tostmessges.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -228,22 +227,11 @@ class _SignInPageState extends State<SignInPage> {
                           if (homeController.SignInkey.currentState!
                               .validate()) {
                             var isLogin = await FirebaseHelper.firebaseHelper
-                                .SignInUser(
+                                .signIn(
                                     email: homeController.txtSignInEmail.text,
                                     password: homeController
                                         .txtSignInPass.value.text);
-                            if (isLogin is bool) {
-                              Get.offNamed('Home');
-                              ToastMessage(
-                                  msg: "Sign In Successful",
-                                  color: Colors.green);
-                            } else {
-                              ToastMessage(msg: "$isLogin", color: Colors.red);
-                            }
-                          } else {
-                            ToastMessage(
-                                msg: "Please Add Your Email & Password",
-                                color: Colors.blueAccent.shade100);
+                            Get.offNamed('Home');
                           }
                         },
                         child: Container(
@@ -299,16 +287,9 @@ class _SignInPageState extends State<SignInPage> {
                               onTap: () async {
                                 var isLogin = await FirebaseHelper
                                     .firebaseHelper
-                                    .GoogleLogIn();
-                                if (isLogin is bool) {
-                                  Get.offNamed('Home');
-                                  ToastMessage(
-                                      msg: "Sign In Successful",
-                                      color: Colors.green);
-                                } else {
-                                  ToastMessage(
-                                      msg: "$isLogin", color: Colors.red);
-                                }
+                                    .googleSignIn();
+
+                                Get.offNamed('Home');
                               },
                               child: Container(
                                 height: Get.height / 23,
