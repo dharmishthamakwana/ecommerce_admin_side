@@ -1,3 +1,4 @@
+import 'package:firebase_app/screen/views/add_task.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,6 +26,8 @@ void main() async {
           'SignIn': (context) => SignInPage(),
           'SignUp': (context) => SignUpPage(),
           'Home': (context) => HomeScreen(),
+          'add': (context) => AddTask(),
+
         },
       );
     },

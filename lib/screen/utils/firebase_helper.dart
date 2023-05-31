@@ -1,5 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class FirebaseHelper {
@@ -8,6 +8,7 @@ class FirebaseHelper {
   FirebaseHelper._();
 
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  FirebaseFirestore fiebaseFirestore = FirebaseFirestore.instance;
 
   void signUP({required email, required password}) {
     firebaseAuth
@@ -16,14 +17,14 @@ class FirebaseHelper {
         .catchError((e) => print("Failed : $e"));
   }
 
-
   Future<String> signIn({required email, required password}) {
     return firebaseAuth
         .signInWithEmailAndPassword(email: email, password: password)
-        .then((value) {
-      return 'Success';
-    },)
-        .catchError((e){
+        .then(
+      (value) {
+        return 'Success';
+      },
+    ).catchError((e) {
       return '$e';
     });
   }
@@ -37,32 +38,53 @@ class FirebaseHelper {
     String? msg;
     GoogleSignInAccount? googleSignInAccount = await GoogleSignIn().signIn();
     GoogleSignInAuthentication googleSignInAuthentication =
-    await googleSignInAccount!.authentication;
+        await googleSignInAccount!.authentication;
     // create a new credential
     var credential = GoogleAuthProvider.credential(
       accessToken: googleSignInAuthentication.accessToken,
       idToken: googleSignInAuthentication.idToken,
     );
-    await firebaseAuth.signInWithCredential(credential).then((value) => msg='Success').catchError((e)=> msg='$e');
+    await firebaseAuth
+        .signInWithCredential(credential)
+        .then((value) => msg = 'Success')
+        .catchError((e) => msg = '$e');
     userDetails();
     return msg;
   }
 
-  Future<bool> signOut()
-  async {
+  Future<bool> signOut() async {
     await firebaseAuth.signOut();
     await GoogleSignIn().signOut();
     return true;
   }
 
-  Future<Map> userDetails()
-  async {
+  Future<Map> userDetails() async {
     User? user = await firebaseAuth.currentUser;
     String? email = user!.email;
     String? img = user.photoURL;
-    String? name = user.displayName;String ? number=user.phoneNumber;
-    Map m1 = {'email':email,'img':img,'name':name,'number':number};
+    String? name = user.displayName;
+    String? number = user.phoneNumber;
+    Map m1 = {'email': email, 'img': img, 'name': name, 'number': number};
     return m1;
   }
 
+  void addTask({email, img, name, number}) {
+    User? user = firebaseAuth.currentUser;
+    String uid = user!.uid;
+    fiebaseFirestore
+        .collection("ecommerce")
+        .doc("$uid")
+        .collection("user")
+        .add({
+      'email': email,
+      'img': img,
+      'name': name,
+      'number': number,
+    });
+  }
+  Stream<QuerySnapshot<Map<String, dynamic>>> getTask(){
+    User? user=firebaseAuth.currentUser;
+    var uid=user!.uid;
+    return fiebaseFirestore.collection("ecommerce").doc("$uid").collection("user").snapshots();
+  }
 }

@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_app/screen/controller/home_controller.dart';
+import 'package:firebase_app/screen/modal/task_modal.dart';
 import 'package:firebase_app/screen/utils/firebase_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +17,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   HomeController homeController = Get.put(HomeController());
 
+  TextEditingController txtemail = TextEditingController();
+  TextEditingController txtnumber = TextEditingController();
+  TextEditingController txtimg = TextEditingController();
+  TextEditingController txtname = TextEditingController();
+  List taskList = [];
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -29,6 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   bool msg = await FirebaseHelper.firebaseHelper.signOut();
                   if (msg = true) {
                     Get.offNamed("SignIn");
+                    Get.snackbar("true", "$msg");
                   }
                 },
                 icon: Icon(Icons.login))
@@ -37,77 +46,109 @@ class _HomeScreenState extends State<HomeScreen> {
         drawer: Drawer(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Container(
-              child: Column(
-                children: [
-                  Obx(
-                    () => CircleAvatar(
-                      radius: 60.sp,
-                      backgroundImage: NetworkImage(homeController
-                                  .userData['img'] ==
-                              null
-                          ? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUtcO4YmGkZhf8rEs8DdPZYnLlPCpOF1pTMZMYf1lDHzaQFAqjUKPzRFdZaqDRuBuYKHo&usqp=CAU'
-                          : '${homeController.userData['img']}'),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 2.h,
-                  ),
-                  Obx(
-                    () => Text(
-                        homeController.userData['name'] == null
-                            ? 'makwana'
-                            : '${homeController.userData['name']}',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12.sp)),
-                  ),
-                  SizedBox(
-                    height: 2.h,
-                  ),
-                  Obx(
-                    () => Text(
-                        homeController.userData['email'] == null
-                            ? "email: makwana@gmail.com"
-                            : '${homeController.userData['email']}',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12.sp)),
-                  ),
-                  SizedBox(
-                    height: 2.h,
-                  ),
-                  Obx(
-                        () => Text(
-                        homeController.userData['number'] == null
-                            ? "number:            '9988552266'"
-                            : '${homeController.userData['number']}',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12.sp)),
-                  ),
-                ],
-              ),
+            child: Column(
+              children: [
+                Obx(() =>
+                      CircleAvatar(
+                        radius: 60.sp,
+                        backgroundImage: NetworkImage(homeController
+                            .userData['img'] ==
+                            null
+                            ? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUtcO4YmGkZhf8rEs8DdPZYnLlPCpOF1pTMZMYf1lDHzaQFAqjUKPzRFdZaqDRuBuYKHo&usqp=CAU'
+                            : '${homeController.userData['img']}'),
+                      ),
+                ),
+                SizedBox(
+                  height: 2.h,
+                ),
+                Obx(
+                      () =>
+                      Text(
+                          homeController.userData['name'] == null
+                              ? 'makwana'
+                              : '${homeController.userData['name']}',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12.sp)),
+                ),
+                SizedBox(
+                  height: 2.h,
+                ),
+                Obx(
+                      () =>
+                      Text(
+                          homeController.userData['email'] == null
+                              ? "email: makwana@gmail.com"
+                              : '${homeController.userData['email']}',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12.sp)),
+                ),
+                SizedBox(
+                  height: 2.h,
+                ),
+                Obx(
+                      () =>
+                      Text(
+                          homeController.userData['number'] == null
+                              ? "number:            '9988552266'"
+                              : '${homeController.userData['number']}',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12.sp)),
+                ),
+              ],
             ),
           ),
         ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Center(
-              child: Text(
-                "welcome...!!",
-                style: TextStyle(
-                    fontSize: 50,
-                    fontWeight: FontWeight.w900,
-                    letterSpacing: 2,
-                    color: Colors.black),
-              ),
-            ),
-          ],
+        body: StreamBuilder(
+          stream: FirebaseHelper.firebaseHelper.getTask(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Text(
+                "${snapshot.error}",
+              );
+            } else if (snapshot.hasData) {
+              QuerySnapshot? snapData = snapshot.data;
+              for (var x in snapData!.docs) {
+                Map? data = x.data() as Map;
+
+                String email = data['email'];
+                String name = data['name'];
+                String img = data['img'];
+                String number = data['number'];
+                TaskModal t1 = TaskModal(
+                  number: number,
+                  name: name,
+                  img: img,
+                  email: email,
+                );
+                taskList.add(t1);
+
+                print("$email,$name,$number,$img");
+              }
+              return ListView.builder(
+                itemCount: taskList.length,
+                itemBuilder: (context, index) {
+                  return ListTile(leading:CircleAvatar(backgroundImage: NetworkImage("${taskList[index].img}")),
+                    title: Text("${taskList[index].email}"),
+                    subtitle: Text("${taskList[index].number}"),
+                    trailing: Text("${taskList[index].name}"),
+                  );
+                },
+              );
+            }
+            return const Center(child: CircularProgressIndicator());
+          },
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () {
+            Get.toNamed('add');
+          },
         ),
       ),
     );
