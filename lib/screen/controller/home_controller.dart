@@ -16,6 +16,7 @@ class HomeController extends GetxController {
 
   RxBool SignUp_password_vis = true.obs;
   RxBool SignIn_password_vis = true.obs;
+  RxMap data = {}.obs;
 
   //Only Function's
 

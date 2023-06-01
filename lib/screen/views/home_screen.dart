@@ -24,6 +24,18 @@ class _HomeScreenState extends State<HomeScreen> {
   List taskList = [];
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getData();
+  }
+
+  Future<void> getData() async {
+    homeController.data.value =
+        await FirebaseHelper.firebaseHelper.userDetails();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
@@ -46,61 +58,61 @@ class _HomeScreenState extends State<HomeScreen> {
         drawer: Drawer(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Obx(() =>
-                      CircleAvatar(
-                        radius: 60.sp,
-                        backgroundImage: NetworkImage(homeController
-                            .userData['img'] ==
-                            null
-                            ? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUtcO4YmGkZhf8rEs8DdPZYnLlPCpOF1pTMZMYf1lDHzaQFAqjUKPzRFdZaqDRuBuYKHo&usqp=CAU'
-                            : '${homeController.userData['img']}'),
-                      ),
-                ),
-                SizedBox(
-                  height: 2.h,
-                ),
-                Obx(
-                      () =>
-                      Text(
-                          homeController.userData['name'] == null
-                              ? 'makwana'
-                              : '${homeController.userData['name']}',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 12.sp)),
-                ),
-                SizedBox(
-                  height: 2.h,
-                ),
-                Obx(
-                      () =>
-                      Text(
-                          homeController.userData['email'] == null
-                              ? "email: makwana@gmail.com"
-                              : '${homeController.userData['email']}',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 12.sp)),
-                ),
-                SizedBox(
-                  height: 2.h,
-                ),
-                Obx(
-                      () =>
-                      Text(
-                          homeController.userData['number'] == null
-                              ? "number:            '9988552266'"
-                              : '${homeController.userData['number']}',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 12.sp)),
-                ),
-              ],
+            child: Container(
+              color: Colors.blue.shade50,
+              child: Column(
+                children: [
+                  Obx(
+                    () => CircleAvatar(
+                      radius: 10.h,
+                      backgroundImage: NetworkImage(homeController.data['img'] ==
+                              null
+                          ? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUtcO4YmGkZhf8rEs8DdPZYnLlPCpOF1pTMZMYf1lDHzaQFAqjUKPzRFdZaqDRuBuYKHo&usqp=CAU'
+                          : '${homeController.data['img']}'),
+                    ),
+
+                  ),
+                  SizedBox(
+                    height: 2.h,
+                  ),
+                  Obx(
+                    () => Text(
+                        homeController.data['name'] == null
+                            ? 'makwana'
+                            : '${homeController.data['name']}',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 12.sp)),
+                  ),
+                  SizedBox(
+                    height: 2.h,
+                  ),
+                  Obx(
+                    () => Text(
+                        homeController.data['email'] == null
+                            ? "email: makwana@gmail.com"
+                            : '${homeController.data['email']}',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 12.sp)),
+                  ),
+                  SizedBox(
+                    height: 2.h,
+                  ),
+                  Obx(
+                    () => Text(
+                        homeController.data['number'] == null
+                            ? ''
+                            : '${homeController.data['number']}',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 12.sp)),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -133,7 +145,10 @@ class _HomeScreenState extends State<HomeScreen> {
               return ListView.builder(
                 itemCount: taskList.length,
                 itemBuilder: (context, index) {
-                  return ListTile(leading:CircleAvatar(backgroundImage: NetworkImage("${taskList[index].img}")),
+                  return ListTile(
+                    leading: CircleAvatar(
+                        backgroundImage:
+                            NetworkImage("${taskList[index].img}")),
                     title: Text("${taskList[index].email}"),
                     subtitle: Text("${taskList[index].number}"),
                     trailing: Text("${taskList[index].name}"),

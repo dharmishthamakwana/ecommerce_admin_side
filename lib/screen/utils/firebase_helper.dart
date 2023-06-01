@@ -64,6 +64,8 @@ class FirebaseHelper {
     String? img = user.photoURL;
     String? name = user.displayName;
     String? number = user.phoneNumber;
+    print('======================');
+    print(img);
     Map m1 = {'email': email, 'img': img, 'name': name, 'number': number};
     return m1;
   }
