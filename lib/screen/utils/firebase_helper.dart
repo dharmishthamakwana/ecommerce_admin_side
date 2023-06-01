@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class FirebaseHelper {
@@ -21,7 +22,7 @@ class FirebaseHelper {
     return firebaseAuth
         .signInWithEmailAndPassword(email: email, password: password)
         .then(
-      (value) {
+          (value) {
         return 'Success';
       },
     ).catchError((e) {
@@ -38,7 +39,7 @@ class FirebaseHelper {
     String? msg;
     GoogleSignInAccount? googleSignInAccount = await GoogleSignIn().signIn();
     GoogleSignInAuthentication googleSignInAuthentication =
-        await googleSignInAccount!.authentication;
+    await googleSignInAccount!.authentication;
     // create a new credential
     var credential = GoogleAuthProvider.credential(
       accessToken: googleSignInAuthentication.accessToken,
@@ -84,9 +85,63 @@ class FirebaseHelper {
       'number': number,
     });
   }
-  Stream<QuerySnapshot<Map<String, dynamic>>> getTask(){
-    User? user=firebaseAuth.currentUser;
-    var uid=user!.uid;
-    return fiebaseFirestore.collection("ecommerce").doc("$uid").collection("user").snapshots();
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getTask() {
+    String uid = getUid();
+    return fiebaseFirestore.collection("ecommerce").doc("$uid").collection(
+        "user").snapshots();
   }
+
+  String getUid() {
+    User?user = firebaseAuth.currentUser;
+    var uid = user!.uid;
+    return uid;
+  }
+
+  void updateTask(String key) {
+    String uid = getUid();
+    fiebaseFirestore.collection("ecommerce").doc("${uid}")
+        .collection("user")
+        .doc(key)
+        .set({
+      "email": "email",
+      "number":"number",
+      "img":"img",
+      "name":"name"
+
+    });
+  }
+  Future<dynamic> FacebookLogIn()
+  async {
+
+    dynamic isLogin;
+    // Trigger the sign-in flow
+    final LoginResult loginResult = await FacebookAuth.instance.login();
+
+    // Create a credential from the access token
+    final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
+
+    // Once signed in, return the UserCredential
+    FirebaseAuth.instance.signInWithCredential(facebookAuthCredential)
+        .then((value) {
+      isLogin = true;
+    })
+        .catchError((error) {
+      int len = 0;
+      for(int i=0; i<error.toString().length; i++)
+      {
+        if(error.toString()[i].contains(']'))
+        {
+          len = i + 2;
+          print("object====== $len");
+          break;
+        }
+      }
+      isLogin = error.toString().substring(len,error.toString().length);
+    });
+    print("===== $isLogin");
+
+    return isLogin;
+  }
+
 }

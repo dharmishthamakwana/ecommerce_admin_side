@@ -311,29 +311,27 @@ class _SignInPageState extends State<SignInPage> {
                                     color: Colors.black38, fontSize: 21.sp),
                               ),
                             ),
-                            // InkWell(
-                            //   onTap: () async {
-                            //     var isLogin = await FirebaseHelper.firebaseHelper.FacebookLogIn();
-                            //     if(isLogin as bool)
-                            //     {
-                            //       Get.offNamed('Home');
-                            //       ToastMessage(msg: "Sign In Successful",color: Colors.green);
-                            //     }
-                            //     else
-                            //     {
-                            //       ToastMessage(msg: "Sign In Not Successful $isLogin",color: Colors.red);
-                            //     }
-                            //   },
-                            //   child: Container(
-                            //     height: Get.height/22,
-                            //     width: Get.height/22,
-                            //     alignment: Alignment.center,
-                            //     child: Image.asset("assets/image/facebook.png",fit: BoxFit.fill,),
-                            //   ),
-                            // ),
+                            InkWell(
+                              onTap: () async {
+                                var isLogin = await FirebaseHelper.firebaseHelper.FacebookLogIn();
+                                if(isLogin as bool)
+                                {
+                                  Get.offNamed('Home');
+
+                                }
+
+                              },
+                              child: Container(
+                                height: Get.height/22,
+                                width: Get.height/22,
+                                alignment: Alignment.center,
+                                child: Image.asset("assets/image/facebook.png",fit: BoxFit.fill,),
+                              ),
+                            ),
                           ],
                         ),
                       ),
+
                       Padding(
                         padding: EdgeInsets.only(
                             top: Get.width / 21, right: Get.width / 12),

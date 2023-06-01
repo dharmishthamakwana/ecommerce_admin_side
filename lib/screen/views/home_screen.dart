@@ -56,63 +56,126 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         drawer: Drawer(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              color: Colors.blue.shade50,
-              child: Column(
-                children: [
-                  Obx(
-                    () => CircleAvatar(
-                      radius: 10.h,
-                      backgroundImage: NetworkImage(homeController.data['img'] ==
-                              null
-                          ? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUtcO4YmGkZhf8rEs8DdPZYnLlPCpOF1pTMZMYf1lDHzaQFAqjUKPzRFdZaqDRuBuYKHo&usqp=CAU'
-                          : '${homeController.data['img']}'),
-                    ),
+          child: Container(
+            color: Colors.blue.shade50,
+            child: Column(
+              children: [
+                Obx(
+                  () => CircleAvatar(
+                    radius: 7.h,
+                    backgroundImage: NetworkImage(homeController
+                                .data['img'] ==
+                            null
+                        ? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUtcO4YmGkZhf8rEs8DdPZYnLlPCpOF1pTMZMYf1lDHzaQFAqjUKPzRFdZaqDRuBuYKHo&usqp=CAU'
+                        : '${homeController.data['img']}'),
+                  ),
+                ),
+                SizedBox(
+                  height: 2.h,
+                ),
+                Obx(
+                  () => Text(
+                      homeController.data['name'] == null
+                          ? 'makwana'
+                          : '${homeController.data['name']}',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12.sp)),
+                ),
+                SizedBox(
+                  height: 2.h,
+                ),
+                Obx(
+                  () => Text(
+                      homeController.data['email'] == null
+                          ? "email: makwana@gmail.com"
+                          : '${homeController.data['email']}',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12.sp)),
+                ),
+                SizedBox(
+                  height: 2.h,
+                ),
+                Obx(
+                  () => Text(
+                      homeController.data['number'] == null
+                          ? ''
+                          : '${homeController.data['number']}',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12.sp)),
+                ),
+                Container(
+                  child:
+                      Text("_____________________________________________"),
+                ),
+                ListTile(
+                  leading: Icon(Icons.home),
+                  title: Text(
+                    "Home Page",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  trailing: Icon(Icons.arrow_forward_ios_outlined),
 
+                ),
+                ListTile(
+                  leading: Icon(Icons.person),
+                  title: Text(
+                    "My Account",
+                    style: TextStyle(fontSize: 20),
                   ),
-                  SizedBox(
-                    height: 2.h,
+                  trailing: Icon(Icons.arrow_forward_ios_outlined),
+
+                ),
+                ListTile(
+                  leading: Icon(Icons.card_travel_rounded),
+                  title: Text(
+                    "My orader",
+                    style: TextStyle(fontSize: 20),
                   ),
-                  Obx(
-                    () => Text(
-                        homeController.data['name'] == null
-                            ? 'makwana'
-                            : '${homeController.data['name']}',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12.sp)),
+                  trailing: Icon(Icons.arrow_forward_ios_outlined),
+
+                ),
+                ListTile(
+                  leading: Icon(Icons.category),
+                  title: Text(
+                    "Categoryes",
+                    style: TextStyle(fontSize: 20),
                   ),
-                  SizedBox(
-                    height: 2.h,
+                  trailing: Icon(Icons.arrow_forward_ios_outlined),
+
+                ),
+                ListTile(
+                  leading: Icon(Icons.favorite, color: Colors.red),
+                  title: Text(
+                    "Favorite",
+                    style: TextStyle(fontSize: 20),
                   ),
-                  Obx(
-                    () => Text(
-                        homeController.data['email'] == null
-                            ? "email: makwana@gmail.com"
-                            : '${homeController.data['email']}',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12.sp)),
+                  trailing: Icon(Icons.arrow_forward_ios_outlined),
+
+                ),
+                ListTile(
+                  leading: Icon(Icons.settings),
+                  title: Text(
+                    "Setting",
+                    style: TextStyle(fontSize: 20),
                   ),
-                  SizedBox(
-                    height: 2.h,
+                  trailing: Icon(Icons.arrow_forward_ios_outlined),
+
+                ),
+                ListTile(
+                  leading: Icon(Icons.device_unknown),
+                  title: Text(
+                    "About Us",
+                    style: TextStyle(fontSize: 20),
                   ),
-                  Obx(
-                    () => Text(
-                        homeController.data['number'] == null
-                            ? ''
-                            : '${homeController.data['number']}',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12.sp)),
-                  ),
-                ],
-              ),
+                  trailing: Icon(Icons.arrow_forward_ios_outlined),
+                ),
+              ],
             ),
           ),
         ),
@@ -145,13 +208,18 @@ class _HomeScreenState extends State<HomeScreen> {
               return ListView.builder(
                 itemCount: taskList.length,
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    leading: CircleAvatar(
-                        backgroundImage:
-                            NetworkImage("${taskList[index].img}")),
-                    title: Text("${taskList[index].email}"),
-                    subtitle: Text("${taskList[index].number}"),
-                    trailing: Text("${taskList[index].name}"),
+                  return GestureDetector(onLongPress: () {
+                    homeController.updatedata=taskList[index];
+                    Get.toNamed('add',arguments: 1);
+                  },
+                    child: ListTile(
+                      leading: CircleAvatar(
+                          backgroundImage:
+                              NetworkImage("${taskList[index].img}")),
+                      title: Text("${taskList[index].email}"),
+                      subtitle: Text("${taskList[index].number}"),
+                      trailing: Text("${taskList[index].name}"),
+                    ),
                   );
                 },
               );

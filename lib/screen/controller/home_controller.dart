@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_app/screen/modal/task_modal.dart';
 import 'package:firebase_app/screen/utils/firebase_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,6 +18,7 @@ class HomeController extends GetxController {
   RxBool SignUp_password_vis = true.obs;
   RxBool SignIn_password_vis = true.obs;
   RxMap data = {}.obs;
+  TaskModal updatedata=TaskModal();
 
   //Only Function's
 
