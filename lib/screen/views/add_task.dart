@@ -11,11 +11,23 @@ class AddTask extends StatefulWidget {
 }
 
 class _AddTaskState extends State<AddTask> {
-  TextEditingController txtemail = TextEditingController();
+  Map index = Get.arguments;
+  TextEditingController txtemail =  TextEditingController();
   TextEditingController txtnumber = TextEditingController();
-  TextEditingController txtimg = TextEditingController();
-  TextEditingController txtname = TextEditingController();
+  TextEditingController txtimg =    TextEditingController();
+  TextEditingController txtname =   TextEditingController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    txtemail = TextEditingController(text: "${index['data'].email}");
+    txtname=TextEditingController(text:"${index['data'].name}" );
+    // txtimg=TextEditingController(text:"${index['data'].img}" );
+    txtnumber=TextEditingController(text:"${index['data'].number}" );
 
+  }
+
+ var args=0;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -84,7 +96,7 @@ class _AddTaskState extends State<AddTask> {
                       number: txtnumber.text);
                   Get.back();
                 },
-                child: const Text("Add Task"),
+                child:  Text(args==1?"Add Task":"Update Task"),
               ),
             ],
           ),

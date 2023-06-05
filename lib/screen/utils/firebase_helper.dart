@@ -143,5 +143,6 @@ class FirebaseHelper {
 
     return isLogin;
   }
+  // void deleteData
 
 }

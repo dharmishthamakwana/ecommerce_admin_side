@@ -63,8 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Obx(
                   () => CircleAvatar(
                     radius: 7.h,
-                    backgroundImage: NetworkImage(homeController
-                                .data['img'] ==
+                    backgroundImage: NetworkImage(homeController.data['img'] ==
                             null
                         ? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUtcO4YmGkZhf8rEs8DdPZYnLlPCpOF1pTMZMYf1lDHzaQFAqjUKPzRFdZaqDRuBuYKHo&usqp=CAU'
                         : '${homeController.data['img']}'),
@@ -110,8 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           fontSize: 12.sp)),
                 ),
                 Container(
-                  child:
-                      Text("_____________________________________________"),
+                  child: Text("_____________________________________________"),
                 ),
                 ListTile(
                   leading: Icon(Icons.home),
@@ -120,7 +118,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: TextStyle(fontSize: 20),
                   ),
                   trailing: Icon(Icons.arrow_forward_ios_outlined),
-
                 ),
                 ListTile(
                   leading: Icon(Icons.person),
@@ -129,7 +126,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: TextStyle(fontSize: 20),
                   ),
                   trailing: Icon(Icons.arrow_forward_ios_outlined),
-
                 ),
                 ListTile(
                   leading: Icon(Icons.card_travel_rounded),
@@ -138,7 +134,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: TextStyle(fontSize: 20),
                   ),
                   trailing: Icon(Icons.arrow_forward_ios_outlined),
-
                 ),
                 ListTile(
                   leading: Icon(Icons.category),
@@ -147,7 +142,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: TextStyle(fontSize: 20),
                   ),
                   trailing: Icon(Icons.arrow_forward_ios_outlined),
-
                 ),
                 ListTile(
                   leading: Icon(Icons.favorite, color: Colors.red),
@@ -156,7 +150,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: TextStyle(fontSize: 20),
                   ),
                   trailing: Icon(Icons.arrow_forward_ios_outlined),
-
                 ),
                 ListTile(
                   leading: Icon(Icons.settings),
@@ -165,7 +158,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: TextStyle(fontSize: 20),
                   ),
                   trailing: Icon(Icons.arrow_forward_ios_outlined),
-
                 ),
                 ListTile(
                   leading: Icon(Icons.device_unknown),
@@ -208,10 +200,15 @@ class _HomeScreenState extends State<HomeScreen> {
               return ListView.builder(
                 itemCount: taskList.length,
                 itemBuilder: (context, index) {
-                  return GestureDetector(onLongPress: () {
-                    homeController.updatedata=taskList[index];
-                    Get.toNamed('add',arguments: 1);
-                  },
+                  return GestureDetector(
+                    onLongPress: () {
+                      homeController.updatedata = taskList[index];
+                      Map args = {
+                        "index": 1,
+                        "data": taskList[index],
+                      };
+                      Get.toNamed('add', arguments: args);
+                    },
                     child: ListTile(
                       leading: CircleAvatar(
                           backgroundImage:
