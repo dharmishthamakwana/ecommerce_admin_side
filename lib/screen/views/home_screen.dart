@@ -17,10 +17,10 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   HomeController homeController = Get.put(HomeController());
 
-  TextEditingController txtemail = TextEditingController();
-  TextEditingController txtnumber = TextEditingController();
-  TextEditingController txtimg = TextEditingController();
-  TextEditingController txtname = TextEditingController();
+  // TextEditingController txtemail = TextEditingController();
+  // TextEditingController txtnumber = TextEditingController();
+  // TextEditingController txtimg = TextEditingController();
+  // TextEditingController txtname = TextEditingController();
   List taskList = [];
 
   @override
@@ -87,13 +87,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 Obx(
                   () => Text(
-                      homeController.data['email'] == null
-                          ? "email: makwana@gmail.com"
-                          : '${homeController.data['email']}',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 12.sp)),
+                    homeController.data['email'] == null
+                        ? "email: makwana@gmail.com"
+                        : '${homeController.data['email']}',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 12.sp,
+                    ),
+                  ),
                 ),
                 SizedBox(
                   height: 2.h,
@@ -180,6 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             } else if (snapshot.hasData) {
               QuerySnapshot? snapData = snapshot.data;
+              taskList.clear();
               for (var x in snapData!.docs) {
                 Map? data = x.data() as Map;
 
@@ -203,11 +206,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   return GestureDetector(
                     onLongPress: () {
                       homeController.updatedata = taskList[index];
-                      Map args = {
-                        "index": 1,
-                        "data": taskList[index],
-                      };
-                      Get.toNamed('add', arguments: args);
+
+                      Get.toNamed('add', arguments: {
+                        'status': 1,
+                        'data': homeController.updatedata
+                      });
+                    },
+                    onDoubleTap: () async {
+                      var key = taskList[index].key;
+                      await FirebaseHelper.firebaseHelper.deleteData(key);
+
+                      Get.snackbar("Delete Success", "");
                     },
                     child: ListTile(
                       leading: CircleAvatar(
@@ -227,7 +236,8 @@ class _HomeScreenState extends State<HomeScreen> {
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () {
-            Get.toNamed('add');
+            Map args = {"id": 1};
+            Get.toNamed('add', arguments: args);
           },
         ),
       ),

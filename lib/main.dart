@@ -17,19 +17,20 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
 
-  runApp(Sizer(
-    builder: (context, orientation, deviceType) {
-      return GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        routes: {
-          '/': (context) => SplashPage(),
-          'SignIn': (context) => SignInPage(),
-          'SignUp': (context) => SignUpPage(),
-          'Home': (context) => HomeScreen(),
-          'add': (context) => AddTask(),
-
-        },
-      );
-    },
-  ));
+  runApp(
+    Sizer(
+      builder: (context, orientation, deviceType) {
+        return GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          routes: {
+            '/': (context) => SplashPage(),
+            'SignIn': (context) => SignInPage(),
+            'SignUp': (context) => SignUpPage(),
+            'Home': (context) => HomeScreen(),
+            'add': (context) => AddTask(),
+          },
+        );
+      },
+    ),
+  );
 }

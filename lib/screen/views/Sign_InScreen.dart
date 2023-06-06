@@ -313,12 +313,12 @@ class _SignInPageState extends State<SignInPage> {
                             ),
                             InkWell(
                               onTap: () async {
-                                var isLogin = await FirebaseHelper.firebaseHelper.FacebookLogIn();
-                                if(isLogin as bool)
-                                {
-                                  Get.offNamed('Home');
-
-                                }
+                                // var isLogin = await FirebaseHelper.firebaseHelper.FacebookLogIn();
+                                // if(isLogin as bool)
+                                // {
+                                //   Get.offNamed('Home');
+                                //
+                                // }
 
                               },
                               child: Container(
