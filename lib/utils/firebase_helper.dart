@@ -104,10 +104,10 @@ class FirebaseHelper {
   //   }).then((value) => msg = "Success");
   //   return msg;
   // }
-  Future<void> addTask({desc, img, name, number,key,price}) async {
+  Future<void> addTask({desc, img, name, number, key, price}) async {
     User? user = firebaseAuth.currentUser;
     String uid = user!.uid;
-    await  fiebaseFirestore
+    await fiebaseFirestore
         .collection("ecommerce")
         .doc("$uid")
         .collection("product")
@@ -116,10 +116,11 @@ class FirebaseHelper {
       'img': img,
       'name': name,
       'number': number,
-      'price':price,
-      'key':key,
+      'price': price,
+      'key': key,
     });
   }
+
   Stream<QuerySnapshot<Map<String, dynamic>>> getTask() {
     String uid = getUid();
     return fiebaseFirestore
