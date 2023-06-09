@@ -125,7 +125,7 @@ class FirebaseHelper {
     return fiebaseFirestore
         .collection("ecommerce")
         .doc("$uid")
-        .collection("user")
+        .collection("product")
         .snapshots();
   }
 
@@ -156,7 +156,7 @@ class FirebaseHelper {
     fiebaseFirestore
         .collection("ecommerce")
         .doc("${uid}")
-        .collection("user")
+        .collection("product")
         .doc(task.key)
         .set({
       "desc": "${task.desc}",
