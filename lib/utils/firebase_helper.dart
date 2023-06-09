@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_app/screen/modal/task_modal.dart';
+import 'package:firebase_app/screen/modal/Product_modal.dart';
 import 'package:firebase_app/utils/fire_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -104,18 +104,19 @@ class FirebaseHelper {
   //   }).then((value) => msg = "Success");
   //   return msg;
   // }
-  Future<void> addTask({email, img, name, number,key}) async {
+  Future<void> addTask({desc, img, name, number,key,price}) async {
     User? user = firebaseAuth.currentUser;
     String uid = user!.uid;
     await  fiebaseFirestore
         .collection("ecommerce")
         .doc("$uid")
-        .collection("user")
+        .collection("product")
         .add({
-      'email': email,
+      'desc': desc,
       'img': img,
       'name': name,
       'number': number,
+      'price':price,
       'key':key,
     });
   }
@@ -150,7 +151,7 @@ class FirebaseHelper {
   //   }).then((value) => msg = "Success");
   //   return msg;
   // }
-  void updateTask(TaskModal task) {
+  void updateTask(ProductModal task) {
     String uid = getUid();
     fiebaseFirestore
         .collection("ecommerce")
@@ -158,7 +159,7 @@ class FirebaseHelper {
         .collection("user")
         .doc(task.key)
         .set({
-      "email": "${task.email}",
+      "desc": "${task.desc}",
       "number": "${task.number}",
       "img": "${task.img}",
       "name": "${task.name}"

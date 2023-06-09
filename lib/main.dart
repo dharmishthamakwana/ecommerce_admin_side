@@ -1,5 +1,6 @@
-import 'package:firebase_app/screen/views/add_task.dart';
+import 'package:firebase_app/screen/views/add_product.dart';
 import 'package:firebase_app/screen/views/notification.dart';
+import 'package:firebase_app/screen/views/update_product.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -29,7 +30,8 @@ void main() async {
             'SignUp': (p0) =>  SignUpPage(),
             'Home': (p0) => HomeScreen(),
             'add': (p0) =>  AddTask(),
-            'note':(p0) => HomePage()
+            'note':(p0) => HomePage(),
+            'update':(p0) => UpdateProduct(),
           },
         );
       },

@@ -232,7 +232,7 @@ class _SignInPageState extends State<SignInPage> {
                                     email: homeController.txtSignInEmail.text,
                                     password: homeController
                                         .txtSignInPass.value.text);
-                            Get.offNamed('note');
+                            Get.offNamed('home');
                           }
                         },
                         child: Container(

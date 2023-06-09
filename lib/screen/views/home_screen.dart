@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_app/screen/controller/home_controller.dart';
-import 'package:firebase_app/screen/modal/task_modal.dart';
+import 'package:firebase_app/screen/modal/Product_modal.dart';
 
 // import 'package:firebase_app/screen/utils/firebase_helper.dart';
 import 'package:firebase_app/utils/firebase_helper.dart';
@@ -188,19 +188,21 @@ class _HomeScreenState extends State<HomeScreen> {
               for (var x in snapData!.docs) {
                 Map? data = x.data() as Map;
 
-                String email = data['email'];
+                String desc = data['desc'];
                 String name = data['name'];
                 String img = data['img'];
                 String number = data['number'];
-                TaskModal t1 = TaskModal(
+                String price = data['price'];
+                ProductModal t1 = ProductModal(
                   number: number,
                   name: name,
                   img: img,
-                  email: email,
+                  desc: desc,
+                  price: price,
                 );
                 taskList.add(t1);
 
-                print("$email,$name,$number,$img");
+                print("$desc,$name,$number,$img,$price");
               }
               return GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -209,9 +211,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemBuilder: (context, index) {
                   return GestureDetector(
                       onLongPress: () {
-                        homeController.updatedata = taskList[index];
-
-                        Get.toNamed('add', arguments: {
+                        Get.toNamed('update', arguments: {
                           'status': 1,
                           'data': homeController.updatedata
                         });
@@ -225,23 +225,32 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
-                          decoration: BoxDecoration(color: Colors.blueAccent.shade100,borderRadius: BorderRadius.circular(15)),
+                          decoration: BoxDecoration(
+                              color: Colors.blueAccent.shade100,
+                              borderRadius: BorderRadius.circular(15)),
                           child: Column(
                             children: [
                               CircleAvatar(
+                                backgroundColor: Colors.blue.shade200,
                                 radius: 40,
                                 backgroundImage:
                                     NetworkImage("${taskList[index].img}"),
                               ),
-                              Text("${taskList[index].email}"),
+                              Text(
+                                "name: ${taskList[index].name}",
+                              ),
                               SizedBox(
                                 height: 5,
                               ),
-                              Text("${taskList[index].number}"),
+                              Text(
+                                "Size:  ${taskList[index].number}",
+                              ),
                               SizedBox(
                                 height: 5,
                               ),
-                              Text("${taskList[index].name}"),
+                              Text(
+                                "desc: ${taskList[index].desc}",
+                              ),
                               Row(
                                 children: [],
                               )

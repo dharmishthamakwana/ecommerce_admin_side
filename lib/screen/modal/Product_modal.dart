@@ -13,8 +13,15 @@
 //       this.Brand,
 //       this.Stock});
 // }
-class TaskModal {
-    String? email, name, img, number,key;
+class ProductModal {
+  String? desc, name, img, number, key, price;
 
-    TaskModal({this.email, this.name, this.img, this.number,this.key});
+  ProductModal({
+    this.desc,
+    this.name,
+    this.img,
+    this.number,
+    this.key,
+    this.price,
+  });
 }

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:timezone/data/latest_all.dart' as tz;
 
-import 'package:firebase_app/screen/modal/task_modal.dart';
+import 'package:firebase_app/screen/modal/Product_modal.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:firebase_app/utils/firebase_helper.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +23,7 @@ class HomeController extends GetxController {
   RxBool SignIn_password_vis = true.obs;
   RxMap data = {}.obs;
 
-  TaskModal updatedata = TaskModal();
+  ProductModal updatedata = ProductModal();
 
   //Only Function's
 
@@ -32,7 +32,7 @@ class HomeController extends GetxController {
     print("===== $isLogin");
     if (isLogin) {
       Timer(Duration(seconds: 3), () {
-        Get.offNamed('note');
+        Get.offNamed('Home');
       });
     } else {
       Timer(Duration(seconds: 3), () {
