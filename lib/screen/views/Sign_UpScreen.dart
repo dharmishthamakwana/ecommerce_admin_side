@@ -1,4 +1,5 @@
 import 'package:firebase_app/screen/controller/home_controller.dart';
+import 'package:firebase_app/utils/firebase_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -217,6 +218,54 @@ class _SignUpPageState extends State<SignUpPage> {
                                 color: Colors.blueAccent.shade100,
                                 fontSize: 12.sp,
                               ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () async {
+                          if (homeController.SignUpkey.currentState!
+                              .validate()) {
+                            bool isSignUp = await FirebaseHelper.firebaseHelper
+                                .SignUpUser(
+                                email: homeController
+                                    .txtSignUpEmail.value.text,
+                                password: homeController
+                                    .txtSignUpPass.value.text);
+
+                            if (isSignUp) {
+                              Get.back();
+                              homeController.txtSignUpEmail.clear();
+                              homeController.txtSignUpPass.clear();
+                              homeController.SignUp_password_vis.value = true;
+                            } else {}
+                          } else {
+                            print("Please Add Your Email Or Password",);
+                          }
+                        },
+                        child: Container(
+                          height: Get.height / 18,
+                          width: Get.width / 3,
+                          margin: EdgeInsets.only(
+                              top: Get.width / 12, right: Get.width / 12),
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(colors: [
+                                Colors.blueAccent.shade100,
+                                Colors.blueAccent,
+                              ]),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.blueAccent.shade100,
+                                    blurRadius: 15,
+                                    offset: Offset(0, 0))
+                              ],
+                              borderRadius: BorderRadius.circular(30)),
+                          alignment: Alignment.center,
+                          child: Text(
+                            "SIGN UP",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15.sp,
                             ),
                           ),
                         ),

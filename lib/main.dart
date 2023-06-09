@@ -1,4 +1,5 @@
 import 'package:firebase_app/screen/views/add_task.dart';
+import 'package:firebase_app/screen/views/notification.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,11 +24,12 @@ void main() async {
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
           routes: {
-            '/': (context) => SplashPage(),
-            'SignIn': (context) => SignInPage(),
-            'SignUp': (context) => SignUpPage(),
-            'Home': (context) => HomeScreen(),
-            'add': (context) => AddTask(),
+            '/':(p0) => SplashPage(),
+            'SignIn': (p0) => SignInPage(),
+            'SignUp': (p0) =>  SignUpPage(),
+            'Home': (p0) => HomeScreen(),
+            'add': (p0) =>  AddTask(),
+            'note':(p0) => HomePage()
           },
         );
       },

@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_app/screen/controller/home_controller.dart';
 import 'package:firebase_app/screen/modal/task_modal.dart';
-import 'package:firebase_app/screen/utils/firebase_helper.dart';
+
+// import 'package:firebase_app/screen/utils/firebase_helper.dart';
+import 'package:firebase_app/utils/firebase_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -200,33 +202,53 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 print("$email,$name,$number,$img");
               }
-              return ListView.builder(
+              return GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2),
                 itemCount: taskList.length,
                 itemBuilder: (context, index) {
                   return GestureDetector(
-                    onLongPress: () {
-                      homeController.updatedata = taskList[index];
+                      onLongPress: () {
+                        homeController.updatedata = taskList[index];
 
-                      Get.toNamed('add', arguments: {
-                        'status': 1,
-                        'data': homeController.updatedata
-                      });
-                    },
-                    onDoubleTap: () async {
-                      var key = taskList[index].key;
-                      await FirebaseHelper.firebaseHelper.deleteData(key);
+                        Get.toNamed('add', arguments: {
+                          'status': 1,
+                          'data': homeController.updatedata
+                        });
+                      },
+                      onDoubleTap: () async {
+                        var key = taskList[index].key;
+                        await FirebaseHelper.firebaseHelper.deleteData(key);
 
-                      Get.snackbar("Delete Success", "");
-                    },
-                    child: ListTile(
-                      leading: CircleAvatar(
-                          backgroundImage:
-                              NetworkImage("${taskList[index].img}")),
-                      title: Text("${taskList[index].email}"),
-                      subtitle: Text("${taskList[index].number}"),
-                      trailing: Text("${taskList[index].name}"),
-                    ),
-                  );
+                        Get.snackbar("Delete Success", "");
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          decoration: BoxDecoration(color: Colors.blueAccent.shade100,borderRadius: BorderRadius.circular(15)),
+                          child: Column(
+                            children: [
+                              CircleAvatar(
+                                radius: 40,
+                                backgroundImage:
+                                    NetworkImage("${taskList[index].img}"),
+                              ),
+                              Text("${taskList[index].email}"),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text("${taskList[index].number}"),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text("${taskList[index].name}"),
+                              Row(
+                                children: [],
+                              )
+                            ],
+                          ),
+                        ),
+                      ));
                 },
               );
             }

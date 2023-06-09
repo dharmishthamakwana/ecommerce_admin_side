@@ -1,5 +1,6 @@
 import 'package:firebase_app/screen/controller/home_controller.dart';
-import 'package:firebase_app/screen/utils/firebase_helper.dart';
+// import 'package:firebase_app/screen/utils/firebase_helper.dart';
+import 'package:firebase_app/utils/firebase_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -231,7 +232,7 @@ class _SignInPageState extends State<SignInPage> {
                                     email: homeController.txtSignInEmail.text,
                                     password: homeController
                                         .txtSignInPass.value.text);
-                            Get.offNamed('Home');
+                            Get.offNamed('note');
                           }
                         },
                         child: Container(
