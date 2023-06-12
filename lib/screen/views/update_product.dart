@@ -15,30 +15,13 @@ class UpdateProduct extends StatefulWidget {
 }
 
 class _UpdateProductState extends State<UpdateProduct> {
-  Map index = Get.arguments;
+  // Map index = Get.arguments;
+
+  ProductModal p1 = Get.arguments;
 
   var args = {};
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    if (index["status"] == 1) {
-      txtdesc = TextEditingController(text: "${index['data'].desc}");
-      txtname = TextEditingController(text: "${index['data'].name}");
-      // txtimg=TextEditingController(text:"${index['data'].img}" );
-      txtnumber = TextEditingController(text: "${index['data'].number}");
-    }
-  }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    txtdesc = TextEditingController(text: homeController.updatedata.desc);
-    txtname = TextEditingController(text: homeController.updatedata.name);
-    // txtimg=TextEditingController(text:"${index['data'].img}" );
-    txtnumber = TextEditingController(text: homeController.updatedata.number);
-  }
 
   HomeController homeController = Get.put(HomeController());
   TextEditingController txtdesc = TextEditingController();
@@ -46,6 +29,18 @@ class _UpdateProductState extends State<UpdateProduct> {
   TextEditingController txtimg = TextEditingController();
   TextEditingController txtname = TextEditingController();
   TextEditingController txtprice = TextEditingController();
+
+
+  @override
+  void initState() {
+    super.initState();
+
+    txtname = TextEditingController(text: "${p1.name}");
+    txtdesc=TextEditingController(text: "${p1.desc}");
+    txtimg=TextEditingController(text: "${p1.img}");
+    txtnumber=TextEditingController(text: "${p1.number}");
+    txtprice=TextEditingController(text: "${p1.price}");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -121,13 +116,14 @@ class _UpdateProductState extends State<UpdateProduct> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    ProductModal p1=ProductModal(
-                        key: args['data'].key,
+                    ProductModal p2=ProductModal(
+                        key: p1.key,
                         desc: txtdesc.text,
                         number: txtnumber.text,
                         name: txtname.text,
-                        img: txtimg.text);
-                    FirebaseHelper.firebaseHelper.updateTask(p1);
+                        img: txtimg.text,
+                    price: txtprice.text);
+                    FirebaseHelper.firebaseHelper.updateTask(p2);
 
                     Get.back();
                   },

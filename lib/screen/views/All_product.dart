@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_app/screen/controller/home_controller.dart';
 import 'package:firebase_app/screen/modal/Product_modal.dart';
-
-// import 'package:firebase_app/screen/utils/firebase_helper.dart';
 import 'package:firebase_app/utils/firebase_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // TextEditingController txtnumber = TextEditingController();
   // TextEditingController txtimg = TextEditingController();
   // TextEditingController txtname = TextEditingController();
-  List taskList = [];
+  List<ProductModal> taskList = [];
 
   @override
   void initState() {
@@ -44,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.blue.shade100,
         appBar: AppBar(
           backgroundColor: Colors.blueAccent.shade700,
-          title: Text("Home Screen"),
+          title: Text("MY Product"),
           actions: [
             IconButton(
                 onPressed: () async {
@@ -112,16 +110,19 @@ class _HomeScreenState extends State<HomeScreen> {
                           fontWeight: FontWeight.w500,
                           fontSize: 12.sp)),
                 ),
-                Container(
-                  child: Text("_____________________________________________"),
-                ),
-                ListTile(
-                  leading: Icon(Icons.home),
-                  title: Text(
-                    "Home Page",
-                    style: TextStyle(fontSize: 20),
+                Text("_____________________________________________"),
+                InkWell(
+                  onTap: () {
+                    Get.toNamed('Home');
+                  },
+                  child: ListTile(
+                    leading: Icon(Icons.home),
+                    title: Text(
+                      "Home Page",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    trailing: Icon(Icons.arrow_forward_ios_outlined),
                   ),
-                  trailing: Icon(Icons.arrow_forward_ios_outlined),
                 ),
                 ListTile(
                   leading: Icon(Icons.person),
@@ -131,13 +132,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   trailing: Icon(Icons.arrow_forward_ios_outlined),
                 ),
-                ListTile(
-                  leading: Icon(Icons.card_travel_rounded),
-                  title: Text(
-                    "My orader",
-                    style: TextStyle(fontSize: 20),
+                InkWell(
+                  onTap: () {
+                    Get.toNamed('orader');
+                  },
+                  child: ListTile(
+                    leading: Icon(Icons.card_travel_rounded),
+                    title: Text(
+                      "My orader",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    trailing: Icon(Icons.arrow_forward_ios_outlined),
                   ),
-                  trailing: Icon(Icons.arrow_forward_ios_outlined),
                 ),
                 ListTile(
                   leading: Icon(Icons.category),
@@ -199,6 +205,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   img: img,
                   desc: desc,
                   price: price,
+                  key: x.id,
                 );
                 taskList.add(t1);
 
@@ -211,14 +218,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemBuilder: (context, index) {
                   return GestureDetector(
                       onLongPress: () {
-                        Get.toNamed('update', arguments: {
-                          'status': 1,
-                          'data': homeController.updatedata
-                        });
+                        ProductModal p1 = ProductModal(
+                          key: taskList[index].key,
+                          desc: taskList[index].desc,
+                          name: taskList[index].name,
+                          number: taskList[index].number,
+                          img: taskList[index].img,
+                          price: taskList[index].price,
+                        );
+                        Get.toNamed('update', arguments: p1);
                       },
                       onDoubleTap: () async {
                         var key = taskList[index].key;
-                        await FirebaseHelper.firebaseHelper.deleteData(key);
+                        await FirebaseHelper.firebaseHelper.deleteData(key: taskList[index].key,);
+
 
                         Get.snackbar("Delete Success", "");
                       },
@@ -227,13 +240,15 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Container(
                           decoration: BoxDecoration(
                               color: Colors.blueAccent.shade100,
-                              borderRadius: BorderRadius.circular(15),border: Border.all(color: Colors.black,width: 2)),
+                              borderRadius: BorderRadius.circular(15),
+                              border:
+                                  Border.all(color: Colors.black, width: 2)),
                           child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               CircleAvatar(
-
                                 backgroundColor: Colors.blue.shade200,
-                                radius: 40,
+                                radius: 30,
                                 backgroundImage:
                                     NetworkImage("${taskList[index].img}"),
                               ),
@@ -241,13 +256,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                 "name: ${taskList[index].name}",
                               ),
                               SizedBox(
-                                height: 5,
+                                height: 2,
                               ),
                               Text(
-                                "Size:  ${taskList[index].number}",
+                                "Price:  ${taskList[index].price}",
                               ),
                               SizedBox(
-                                height: 5,
+                                height: 2,
                               ),
                               Text(
                                 "desc: ${taskList[index].desc}",

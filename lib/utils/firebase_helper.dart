@@ -3,7 +3,6 @@ import 'package:firebase_app/screen/modal/Product_modal.dart';
 import 'package:firebase_app/utils/fire_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -82,28 +81,13 @@ class FirebaseHelper {
     String? img = user.photoURL;
     String? name = user.displayName;
     String? number = user.phoneNumber;
-    print('======================');
-    print(img);
+    // print('======================');
+    print("================================$img");
     Map m1 = {'email': email, 'img': img, 'name': name, 'number': number};
     return m1;
   }
 
-  // Future<String?> adddata(
-  //     {String? Name, Brand, Price, Dis, Day, stock, img, cat}) async {
-  //   String? msg;
-  //   await fiebaseFirestore.collection("product").add({
-  //     "Name": "$Name",
-  //     "Brand": "$Brand",
-  //     "Price": "$Price",
-  //     "Dis": "$Dis",
-  //     "rat": "0",
-  //     "Day": "$Day",
-  //     "Stock": "$stock",
-  //     "Cat": "$cat",
-  //     "Img": "$img",
-  //   }).then((value) => msg = "Success");
-  //   return msg;
-  // }
+
   Future<void> addTask({desc, img, name, number, key, price}) async {
     User? user = firebaseAuth.currentUser;
     String uid = user!.uid;
@@ -136,22 +120,7 @@ class FirebaseHelper {
     return uid;
   }
 
-  // Future<String?> Update(
-  //     {rat, String? Name, Brand, Price, Dis, Day, stock, img, cat, key}) async {
-  //   String? msg;
-  //   await fiebaseFirestore.collection("product").doc('$key').set({
-  //     "Name": "$Name",
-  //     "Brand": "$Brand",
-  //     "Price": "$Price",
-  //     "Dis": "$Dis",
-  //     "Day": "$Day",
-  //     "Stock": "$stock",
-  //     "Cat": "$cat",
-  //     "Img": "$img",
-  //     "rat": "$rat",
-  //   }).then((value) => msg = "Success");
-  //   return msg;
-  // }
+
   void updateTask(ProductModal task) {
     String uid = getUid();
     fiebaseFirestore
@@ -163,64 +132,13 @@ class FirebaseHelper {
       "desc": "${task.desc}",
       "number": "${task.number}",
       "img": "${task.img}",
-      "name": "${task.name}"
+      "name": "${task.name}",
+      "price":"${task.price}"
     });
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> readdata() {
-    return fiebaseFirestore.collection('product').snapshots();
-  }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> readorder() {
-    return fiebaseFirestore.collection('order').snapshots();
-  }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> readuser({uid}) {
-    return fiebaseFirestore
-        .collection('user')
-        .doc('$uid')
-        .collection('data')
-        .snapshots();
-  }
-
-  void delet(id) {
-    fiebaseFirestore.collection("order").doc('$id').delete();
-  }
-
-  Stream<QuerySnapshot<Map<String, dynamic>>> comorder() {
-    return fiebaseFirestore.collection("comorder").snapshots();
-  }
-
-  Future<String?> Comorder(
-      {String? Name,
-      Brand,
-      Price,
-      img,
-      con,
-      uName,
-      email,
-      add,
-      Dis,
-      pay}) async {
-    String? msg;
-    await fiebaseFirestore.collection("comorder").add({
-      "Name": "$Name",
-      "pay": "$pay",
-      "Con": "$con",
-      "Brand": "$Brand",
-      "Price": "$Price",
-      "Dis": "$Dis",
-      "Img": "$img",
-      "email": "$email",
-      "uname": "$uName",
-      "add": "$add",
-    }).then((value) => msg = "Success");
-    return msg;
-  }
-
-  void delete(id) {
-    fiebaseFirestore.collection('product').doc('$id').delete();
-  }
 
   // Future<dynamic> FacebookLogIn() async {
   //   dynamic isLogin;
@@ -252,12 +170,12 @@ class FirebaseHelper {
   //   return isLogin;
   // }
 
-  Future<void> deleteData(String key) async {
+  Future<void> deleteData({required key}) async {
     var uid = getUid();
     await fiebaseFirestore
         .collection("ecommerce")
         .doc(uid)
-        .collection("user")
+        .collection("product")
         .doc(key)
         .delete();
   }
@@ -268,15 +186,7 @@ class FirebaseHelper {
     print("=== TOKEN === $token");
     InitializeNotification();
 
-    NotificationSettings notificationSettings =
-        await firebaseMessaging.requestPermission(
-            alert: true,
-            sound: true,
-            badge: true,
-            announcement: true,
-            carPlay: true,
-            criticalAlert: true,
-            provisional: true);
+
 
     FirebaseMessaging.onMessage.listen(
       (msg) {
@@ -331,4 +241,63 @@ class FirebaseHelper {
             ))
         .catchError((error) => print("$error"));
   }
+
+
+
+ Stream<QuerySnapshot<Map<String, dynamic>>> readdata() {
+    return fiebaseFirestore.collection('product').snapshots();
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> readorder() {
+    return fiebaseFirestore.collection('order').snapshots();
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> readuser({uid}) {
+    return fiebaseFirestore
+        .collection('user')
+        .doc('$uid')
+        .collection('data')
+        .snapshots();
+  }
+
+
+ void delet(id) {
+    fiebaseFirestore.collection("order").doc('$id').delete();
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> comorder() {
+    return fiebaseFirestore.collection("comorder").snapshots();
+  }
+  Future<String?> Comorder(
+      {String? Name,
+        Brand,
+        Price,
+        img,
+        con,
+        uName,
+        email,
+        add,
+        Dis,
+        pay}) async {
+    String? msg;
+    await fiebaseFirestore.collection("comorder").add({
+      "Name": "$Name",
+      "pay": "$pay",
+      "Con": "$con",
+      "Brand": "$Brand",
+      "Price": "$Price",
+      "Dis": "$Dis",
+      "Img": "$img",
+      "email": "$email",
+      "uname": "$uName",
+      "add": "$add",
+    }).then((value) => msg = "Success");
+    return msg;
+  }
+
+  void delete(id) {
+    fiebaseFirestore.collection('product').doc('$id').delete();
+  }
+
+
 }
