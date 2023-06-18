@@ -47,6 +47,7 @@ class _UpdateProductState extends State<UpdateProduct> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor:Colors.blueGrey.shade900,
           title: Text("Update Product"),
         ),
         body: Padding(
@@ -115,6 +116,7 @@ class _UpdateProductState extends State<UpdateProduct> {
                   height: 10,
                 ),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey.shade700),
                   onPressed: () {
                     ProductModal p2=ProductModal(
                         key: p1.key,

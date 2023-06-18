@@ -17,10 +17,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   HomeController homeController = Get.put(HomeController());
 
-  // TextEditingController txtemail = TextEditingController();
-  // TextEditingController txtnumber = TextEditingController();
-  // TextEditingController txtimg = TextEditingController();
-  // TextEditingController txtname = TextEditingController();
   List<ProductModal> taskList = [];
 
   @override
@@ -39,9 +35,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.blue.shade100,
         appBar: AppBar(
-          backgroundColor: Colors.blueAccent.shade700,
+          backgroundColor: Colors.blueGrey.shade900,
           title: Text("MY Product"),
           actions: [
             IconButton(
@@ -57,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         drawer: Drawer(
           child: Container(
-            color: Colors.blue.shade50,
+            color: Colors.blueGrey.shade50,
             child: Column(
               children: [
                 Obx(
@@ -132,18 +127,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   trailing: Icon(Icons.arrow_forward_ios_outlined),
                 ),
-                InkWell(
-                  onTap: () {
-                    Get.toNamed('orader');
-                  },
-                  child: ListTile(
-                    leading: Icon(Icons.card_travel_rounded),
-                    title: Text(
-                      "My orader",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    trailing: Icon(Icons.arrow_forward_ios_outlined),
+                ListTile(
+                  leading: Icon(Icons.card_travel_rounded),
+                  title: Text(
+                    "My orader",
+                    style: TextStyle(fontSize: 20),
                   ),
+                  trailing: Icon(Icons.arrow_forward_ios_outlined),
                 ),
                 ListTile(
                   leading: Icon(Icons.category),
@@ -229,47 +219,69 @@ class _HomeScreenState extends State<HomeScreen> {
                         Get.toNamed('update', arguments: p1);
                       },
                       onDoubleTap: () async {
-                        var key = taskList[index].key;
-                        await FirebaseHelper.firebaseHelper.deleteData(key: taskList[index].key,);
-
+                        await FirebaseHelper.firebaseHelper
+                            .deleteData(key: taskList[index].key);
 
                         Get.snackbar("Delete Success", "");
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
+                          height: 400,
                           decoration: BoxDecoration(
-                              color: Colors.blueAccent.shade100,
-                              borderRadius: BorderRadius.circular(15),
-                              border:
-                                  Border.all(color: Colors.black, width: 2)),
+                            color: Colors.blueGrey.shade100,
+                            borderRadius: BorderRadius.circular(15),
+                            border: Border.all(
+                              color: Colors.black,
+                              width: 2,
+                            ),
+                          ),
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               CircleAvatar(
-                                backgroundColor: Colors.blue.shade200,
-                                radius: 30,
+                                backgroundColor: Colors.blueGrey.shade200,
+                                radius: 34,
                                 backgroundImage:
                                     NetworkImage("${taskList[index].img}"),
                               ),
+                              Align(
+                                alignment: Alignment.topLeft,
+                                child: Text(
+                                  "name:",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 17),
+                                ),
+                              ),
                               Text(
-                                "name: ${taskList[index].name}",
+                                "              ${taskList[index].name}",
+                                overflow: TextOverflow.ellipsis,
                               ),
                               SizedBox(
                                 height: 2,
                               ),
-                              Text(
-                                "Price:  ${taskList[index].price}",
+                              Align(
+                                alignment: Alignment.topLeft,
+                                child: Text(
+                                  "Price:",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 17),
+                                ),
                               ),
+                              Text("${taskList[index].price}"),
                               SizedBox(
                                 height: 2,
                               ),
-                              Text(
-                                "desc: ${taskList[index].desc}",
+                              Align(
+                                alignment: Alignment.topLeft,
+                                child: Text(
+                                  "desc:${taskList[index].desc}",
+                                  overflow: TextOverflow.ellipsis,
+                                  // style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
                               ),
-                              Row(
-                                children: [],
-                              )
                             ],
                           ),
                         ),
@@ -281,6 +293,7 @@ class _HomeScreenState extends State<HomeScreen> {
           },
         ),
         floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.blueGrey.shade700,
           child: Icon(Icons.add),
           onPressed: () {
             Map args = {"id": 1};

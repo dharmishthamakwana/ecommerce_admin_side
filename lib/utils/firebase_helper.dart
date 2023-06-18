@@ -91,10 +91,7 @@ class FirebaseHelper {
   Future<void> addTask({desc, img, name, number, key, price}) async {
     User? user = firebaseAuth.currentUser;
     String uid = user!.uid;
-    await fiebaseFirestore
-        .collection("ecommerce")
-        .doc("$uid")
-        .collection("product")
+    await fiebaseFirestore.collection("product")
         .add({
       'desc': desc,
       'img': img,
@@ -106,10 +103,7 @@ class FirebaseHelper {
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getTask() {
-    String uid = getUid();
     return fiebaseFirestore
-        .collection("ecommerce")
-        .doc("$uid")
         .collection("product")
         .snapshots();
   }
@@ -124,8 +118,6 @@ class FirebaseHelper {
   void updateTask(ProductModal task) {
     String uid = getUid();
     fiebaseFirestore
-        .collection("ecommerce")
-        .doc("${uid}")
         .collection("product")
         .doc(task.key)
         .set({
@@ -140,42 +132,11 @@ class FirebaseHelper {
 
 
 
-  // Future<dynamic> FacebookLogIn() async {
-  //   dynamic isLogin;
-  //   // Trigger the sign-in flow
-  //   final LoginResult loginResult = await FacebookAuth.instance.login();
-  //
-  //   // Create a credential from the access token
-  //   final OAuthCredential facebookAuthCredential =
-  //       FacebookAuthProvider.credential(loginResult.accessToken!.token);
-  //
-  //   // Once signed in, return the UserCredential
-  //   FirebaseAuth.instance
-  //       .signInWithCredential(facebookAuthCredential)
-  //       .then((value) {
-  //     isLogin = true;
-  //   }).catchError((error) {
-  //     int len = 0;
-  //     for (int i = 0; i < error.toString().length; i++) {
-  //       if (error.toString()[i].contains(']')) {
-  //         len = i + 2;
-  //         print("object====== $len");
-  //         break;
-  //       }
-  //     }
-  //     isLogin = error.toString().substring(len, error.toString().length);
-  //   });
-  //   print("===== $isLogin");
-  //
-  //   return isLogin;
-  // }
+
 
   Future<void> deleteData({required key}) async {
     var uid = getUid();
-    await fiebaseFirestore
-        .collection("ecommerce")
-        .doc(uid)
-        .collection("product")
+    await fiebaseFirestore.collection("product")
         .doc(key)
         .delete();
   }
@@ -261,43 +222,6 @@ class FirebaseHelper {
   }
 
 
- void delet(id) {
-    fiebaseFirestore.collection("order").doc('$id').delete();
-  }
-
-  Stream<QuerySnapshot<Map<String, dynamic>>> comorder() {
-    return fiebaseFirestore.collection("comorder").snapshots();
-  }
-  Future<String?> Comorder(
-      {String? Name,
-        Brand,
-        Price,
-        img,
-        con,
-        uName,
-        email,
-        add,
-        Dis,
-        pay}) async {
-    String? msg;
-    await fiebaseFirestore.collection("comorder").add({
-      "Name": "$Name",
-      "pay": "$pay",
-      "Con": "$con",
-      "Brand": "$Brand",
-      "Price": "$Price",
-      "Dis": "$Dis",
-      "Img": "$img",
-      "email": "$email",
-      "uname": "$uName",
-      "add": "$add",
-    }).then((value) => msg = "Success");
-    return msg;
-  }
-
-  void delete(id) {
-    fiebaseFirestore.collection('product').doc('$id').delete();
-  }
 
 
 }

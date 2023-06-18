@@ -53,6 +53,7 @@ class _AddTaskState extends State<AddTask> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.blueGrey.shade900,
           title: Text("Add Task"),
         ),
         body: Padding(
@@ -117,46 +118,11 @@ class _AddTaskState extends State<AddTask> {
                       label: Text("enter the price"),
                       hintText: "number"),
                 ),
-                // const SizedBox(
-                //   height: 10,
-                // ),
-                // TextField(
-                //   controller: txtnumber,
-                //   decoration: InputDecoration(
-                //       focusedBorder: OutlineInputBorder(),
-                //       enabled: true,
-                //       enabledBorder: OutlineInputBorder(),
-                //       label: Text("enter the number"),
-                //       hintText: "number"),
-                // ),
-                // const SizedBox(
-                //   height: 10,
-                // ),
-                // TextField(
-                //   controller: txtnumber,
-                //   decoration: InputDecoration(
-                //       focusedBorder: OutlineInputBorder(),
-                //       enabled: true,
-                //       enabledBorder: OutlineInputBorder(),
-                //       label: Text("enter the number"),
-                //       hintText: "number"),
-                // ),
-                // const SizedBox(
-                //   height: 10,
-                // ),
-                // TextField(
-                //   controller: txtnumber,
-                //   decoration: InputDecoration(
-                //       focusedBorder: OutlineInputBorder(),
-                //       enabled: true,
-                //       enabledBorder: OutlineInputBorder(),
-                //       label: Text("enter the number"),
-                //       hintText: "number"),
-                // ),
                 SizedBox(
                   height: 10,
                 ),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey.shade700),
                   onPressed: () {
                     FirebaseHelper.firebaseHelper.addTask(
                       img: txtimg.text,
